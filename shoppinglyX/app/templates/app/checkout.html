@@ -1,0 +1,129 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Checkout{% endblock title %}
+{% block main-content %}
+<div class="container">
+ <div class="row mt-5">
+  <div class="col-sm-6">
+    <h4>Order Summary</h4>
+    <hr>
+    {% for item in cart_items %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5>Product: {{item.product.title}}</h5>
+          <p>Quantity: {{item.quantity}}</p>
+          <p class="fw-bold">Price: {{item.total_cost}} </p>
+        </div>
+      </div>
+      {% endfor %}
+      <p class="fw-bold">Total Cost + Rs. 70 = {{totalamount}}</p>
+    <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem. Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil in et quis?</small>
+  </div>
+  <div class="col-sm-4 offset-sm-1">
+    <h4>Select Shipping Address</h4>
+    <hr>
+    <form action="/paymentdone">
+      {% for ad in add %}
+      <div class="card">
+        <div class="card-body">
+        <h5>{{ad.name}}</h5>
+        <p>{{ad.locality}}, {{ad.city}}, {{ad.state}} - {{ad.zipcode}}</p>
+        </div>
+      </div>
+        <div class="form-check mt-2 mb-5">
+          <input class="form-check-input" type="radio" name="custid" id="custadd{{forloop.counter}}" value="{{ad.id}}" required>
+          <label class="form-check-label fw-bold" for="custadd{{forloop.counter}}">
+            Address: {{forloop.counter}} </label>
+        </div>
+        {% endfor %}
+        <div class="">
+
+
+<!-- payment getway static setting  -->
+
+          <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h7 class="modal-title" id="exampleModalToggleLabel"><img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="23px" width="65px" alt="">Log in to your PayPal account - Google Chrome</h7>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-5">
+                  <h3>Pay With PayPal</h3>
+                    <input type="text" placeholder="Email" style="border: 1px solid rgba(78, 78, 78, 0.788); width: 400px; padding: 5px;border-radius: 5px;font-size: 18px;">
+                    <br>
+                    <input type="password" placeholder="Password" style="border: 1px solid rgba(78, 78, 78, 0.788); width: 400px; padding: 5px;border-radius: 5px;margin-top: 5px;font-size: 18px;">
+                  <br>
+                  <button class="btn btn-primary mt-2" style="width: 400px;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Log In</button>
+                  <p class="text-center text-primary mt-2">Forgot Password</p>
+                  <hr>
+                  <a href="#" class="btn btn-secondary mt-2" style="width: 400px;">Pay with Debit or Credit Cart</a>
+
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h7 class="modal-title" id="exampleModalToggleLabel"><img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="23px" width="65px" alt="">Log in to your PayPal account - Google Chrome</h7>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                 
+                  <img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="50px" width="150px" alt="">
+                  <br>
+                  <br>
+                  <div>
+                    <h4 style="color: rgb(177, 136, 2);background: rgb(250, 229, 201);padding: 5px;border-radius: 5px;">Conference Tickets -2 Rs.{{totalamount}}</h4>
+                    <h4 style="color: rgb(177, 107, 2);background: rgb(243, 204, 74);padding: 5px;border-radius: 5px;font-weight: 700;">Subtotal: Rs.{{totalamount}}</h4>
+                    <h4 style="color: rgb(177, 136, 2);background: rgb(250, 229, 201);padding: 5px;border-radius: 5px;">Processing Fees: Rs. 70</h4>
+                    <h2 style="color: rgb(177, 107, 2);padding: 5px;font-weight: 700;">Amount Due: Rs.{{totalamount}}</h2>
+                    <br>
+                    <div class="text-center">
+                    <button class="btn btn-warning" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal">Check out with <img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="40px" width="130px" alt=""></button>
+                  </div>
+                  </div>
+                  <!-- <h2>Your Balance : $ 76,040.00</h2>
+                  <br>
+                  <h2>Payment Amount : $ {{totalamount}}</h2> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h7 class="modal-title" id="exampleModalToggleLabel"><img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="23px" width="65px" alt="">Log in to your PayPal account - Google Chrome</h7>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="50px" width="150px" alt=""><br>
+                  <div class="text-center">
+                  <h2>
+                    <iframe src="https://giphy.com/embed/ibolLe3mOqHE3PQTtk" width="200px" height="200px" frameborder="0" class="giphy-enved" allowfullscreen></iframe>
+                    <br>Successfully<br> sent to {{request.user}} <br><br>Just Click Continue</h2>
+                </div>
+                </div>
+                <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-grid">
+          <a class="btn btn-warning mt-3 px-5 fw-bold" data-bs-toggle="modal" href="#exampleModalToggle" role="button"><img src="{% static 'app/images/paypal.png' %}" class="pb-1" height="23px" width="65px" alt=""></a></div>
+
+
+<!-- payment getway static setting end -->
+
+          <!-- <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}

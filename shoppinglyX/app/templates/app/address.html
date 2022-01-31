@@ -1,0 +1,40 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Addres{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+ <h3>Welcome <span class="text-capitalize">{{request.user}}</span> </h3>
+  <div class="col-sm-2 border-end">
+   <ul class="list-unstyled">
+    <li class="d-grid"><a href="{% url 'profile' %}" class="btn">Profile</a></li>
+    <li class="d-grid"><a href="{% url 'address' %}" class="btn {{active}}">Address</a></li>
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+   <div class="row">
+    {% for ad in add %}
+    <div class="col-sm-6">
+     <div class="card">
+      <div class="card-body">
+       <div class="d-flex justify-content-between"><h3>Address {{forloop.counter}}</h3> 
+       <form action="{% url 'delete_address' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name='address_id' value="{{ad.id}}" class="visually-hidden">
+       <button type="submit" class="btn-close" aria-label="Close"></button>
+       </form>
+       </div>
+       <p>Name     : {{ad.name}}</p>
+       <p>Locality : {{ad.locality}}</p>
+       <p>City     : {{ad.city}}</p>
+       <p>State    : {{ad.state}}</p>
+       <p>Pin Code : {{ad.zipcode}}</p>       
+      </div>
+     </div>
+    </div>
+    {% endfor %}
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock main-content %}
